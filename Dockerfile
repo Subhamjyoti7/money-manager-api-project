@@ -1,14 +1,14 @@
-# Use lightweight Java 21 runtime
-FROM eclipse-temurin:21-jre
+# Use Java 17 runtime (matches build)
+FROM eclipse-temurin:17-jre
 
-# Set working directory inside container
+# Set working directory
 WORKDIR /app
 
-# Copy only the built jar into the container
-COPY target/Money_Manager_System-0.0.1-SNAPSHOT.jar moneymanager-v1.0.jar
+# Copy the executable jar
+COPY target/Money_Manager_System-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose Spring Boot port
-EXPOSE 9090
+EXPOSE 8080
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "moneymanager-v1.0.jar"]
+# Run Spring Boot app
+ENTRYPOINT ["java", "-jar", "app.jar"]
