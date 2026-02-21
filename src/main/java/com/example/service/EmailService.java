@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class EmailService {
 	private final JavaMailSender mailSender;
 	
-	@Value("${spring.mail.properties.mail.smtp.from}")
+	@Value("${spring.mail.properties.mail.smtp.from:dummy@mail.com}")
 	private String fromEmail;
 	
 	public void sendEmail(String to, String subject,String body) {
