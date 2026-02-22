@@ -1,37 +1,60 @@
 package com.example.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import java.util.HashMap;
+import java.util.Map;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
-@RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender mailSender;
+    @Value("${BREVO_API_KEY}")
+    private String apiKey;
 
-    @Value("${spring.mail.properties.mail.smtp.from}")
+    @Value("${BREVO_FROM_EMAIL}")
     private String fromEmail;
 
-    @Async
-    public void sendEmail(String to, String subject, String body) {
-        try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(fromEmail);
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(body);
-            mailSender.send(message);
+    @Value("${BREVO_FROM_NAME}")
+    private String fromName;
 
-            System.out.println("Email sent successfully to " + to);
+    private static final String BREVO_URL = "https://api.brevo.com/v3/smtp/email";
+
+    public void sendEmail(String to, String subject, String body) {
+
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("api-key", apiKey);
+
+            Map<String, Object> sender = new HashMap<>();
+            sender.put("email", fromEmail);
+            sender.put("name", fromName);
+
+            Map<String, Object> toMap = new HashMap<>();
+            toMap.put("email", to);
+
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("sender", sender);
+            payload.put("to", new Object[]{toMap});
+            payload.put("subject", subject);
+            payload.put("htmlContent", "<p>" + body + "</p>");
+
+            HttpEntity<Map<String, Object>> request =
+                    new HttpEntity<>(payload, headers);
+
+            restTemplate.postForEntity(BREVO_URL, request, String.class);
+
+            System.out.println("✅ Brevo API email sent to " + to);
 
         } catch (Exception e) {
-            System.err.println("Email failed for " + to + " : " + e.getMessage());
-            // 🔴 DO NOT throw
+            System.err.println("❌ Brevo API email FAILED: " + e.getMessage());
         }
     }
 }
