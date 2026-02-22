@@ -19,7 +19,7 @@ import com.example.service.IncomeService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/incomes")
+@RequestMapping("/api/v1.0/incomes")
 @RequiredArgsConstructor
 public class IncomeController {
 	

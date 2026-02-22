@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/dashboard")
+@RequestMapping("/api/v1.0/dashboard")
 public class DashboardController {
 	
 	private final DashboardService dashboardService;

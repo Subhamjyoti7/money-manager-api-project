@@ -31,7 +31,8 @@ public class ProfileService {
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtil jwtUtil;
 	
-	
+	@Value("${app.base-url}")
+	private String baseUrl;
 	
 	
 	
@@ -41,8 +42,9 @@ public class ProfileService {
 	newProfile.setActivationToken(UUID.randomUUID().toString());
 	newProfile=profileRepository.save(newProfile);
 	
+	
 	//sent activation link 
-	String activationLink="http://localhost:8080/api/v1.0/activate?token="+newProfile.getActivationToken();
+	String activationLink= baseUrl+"/api/v1.0/activate?token="+newProfile.getActivationToken();
 	String subject="Activate your Money Manager account";
 	String body="Click on the following link to activate your account: "+activationLink;
 	emailService.sendEmail(

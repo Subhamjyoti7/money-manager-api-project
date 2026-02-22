@@ -42,8 +42,14 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.cors(Customizer.withDefaults())
 		.csrf(AbstractHttpConfigurer::disable)
-		.authorizeHttpRequests(auth -> auth.requestMatchers("/status","/health","/register","/activate","/login").permitAll()
-				.anyRequest().authenticated())
+		.authorizeHttpRequests(auth -> auth
+	            .requestMatchers(
+	                "/api/v1.0/register",
+	                "/api/v1.0/login",
+	                "/api/v1.0/activate",
+	                "/api/v1.0/test"
+	            ).permitAll()
+	            .anyRequest().authenticated())
 		.sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		
