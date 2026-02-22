@@ -10,27 +10,26 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-	private final JavaMailSender mailSender;
-	
-	@Value("${spring.mail.properties.mail.smtp.from:dummy@mail.com}")
-	private String fromEmail;
-	
-	public void sendEmail(String to, String subject,String body) {
-		
-		try {
-			
-			SimpleMailMessage message= new  SimpleMailMessage();
-			message.setFrom(fromEmail);
-			message.setTo(to);
-			message.setSubject(subject);
-			message.setText(body);
-			mailSender.send(message);
-		}catch (Exception e) {
-		    e.printStackTrace();
-		    throw new RuntimeException("Email sending failed");
-		}
 
-	}
-	
+    private final JavaMailSender mailSender;
 
+    @Value("${spring.mail.properties.mail.smtp.from:dummy@mail.com}")
+    private String fromEmail;
+
+    public void sendEmail(String to, String subject, String body) {
+
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail);
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(body);
+            mailSender.send(message);
+        } catch (Exception e) {
+            // 🔥 VERY IMPORTANT FIX
+            // DO NOT throw exception – just log it
+            System.err.println("Email failed, but registration will continue");
+            e.printStackTrace();
+        }
+    }
 }
