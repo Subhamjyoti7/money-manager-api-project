@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.entity.ExpenseEntity;
+import com.example.entity.IncomeEntity;
 
 public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
 
@@ -34,6 +35,8 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
 	
     //select * from expenses where profil_id=? and data=?
     List<ExpenseEntity> findByProfileIdAndDate(Long profileId,LocalDate  date);
+    
+    List<ExpenseEntity> findByProfileId(Long profileId);
     
     
 	

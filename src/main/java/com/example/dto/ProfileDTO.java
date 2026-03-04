@@ -22,6 +22,7 @@ public class ProfileDTO {
 	
 	private String password;
 	
+	
 	private String profileImgUrl;
 	
 
