@@ -64,10 +64,9 @@ https://drive.google.com/file/d/1k2V20Co1MmA1za5KitoryAGiIXMbVQyQ/view?usp=drive
 
 ---
 
-## ⚙️ Installation
+## ⚙️ Live Project
 
-### Clone Repository
-https://github.com/Subhamjyoti7/moneymanager-frontend
+https://stunning-khapse-c6dc1d.netlify.app/
 
 
 ---
